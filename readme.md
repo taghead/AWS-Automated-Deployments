@@ -32,7 +32,7 @@ The CircleCI pipeline configuration exports the database endpoint and the image 
 export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
 export docker_image="$(cat ./artifacts/image.txt)"
 ```
-and applied to deployments by using the `--set` parmeter
+and these variables are applied to deployments by using the `--set` parmeter
 ```yaml
 helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
 ```
