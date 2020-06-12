@@ -172,7 +172,7 @@ jobs:
           command: |
             export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
             export docker_image="$(cat ./artifacts/image.txt)"
-            helm upgrade acme artifacts/acme-*.tgz -i --set dbhost=${dbhost_endpoint} --set image=${docker_image} --wait 
+            helm upgrade acme artifacts/acme-*.tgz -i --set dbhost=${dbhost_endpoint} --set image=${docker_image}
 
       - persist_to_workspace:
           root: ./
