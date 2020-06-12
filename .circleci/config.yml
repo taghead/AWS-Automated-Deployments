@@ -165,14 +165,12 @@ jobs:
       reponame: app
       NODE_ENV: production
     steps:
-      - checkout
+      - attach_workspace:
+          at: ./
       - setup-cd
       - run: 
           name: Build image
           command: |
-            ls
-            ls artifacts/infra
-            ls artifacts
             export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
             export docker_image="$(cat ./artifacts/image.txt)"
             helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
