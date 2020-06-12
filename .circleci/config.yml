@@ -158,12 +158,11 @@ jobs:
           paths:
             - artifacts
 
-  deploy:
-    machine: true
+  deploy-helm-test:
+    docker:
+      - image: cimg/base:2020.01
     environment:
-      ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
-      reponame: app
-      NODE_ENV: production
+      ENV: test
     steps:
       - attach_workspace:
           at: ./
@@ -173,7 +172,7 @@ jobs:
           command: |
             export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
             export docker_image="$(cat ./artifacts/image.txt)"
-            helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+            helm update acme artifacts/acme-*.tgz -i --set dbhost=${dbhost_endpoint} --set image=${docker_image} --wait 
 
       - persist_to_workspace:
           root: ./
@@ -186,7 +185,7 @@ workflows:
     jobs:
 #      - build
       - package
-      - deploy:
+      - deploy-helm-test:
           requires: 
             - package
 #      - integration:
