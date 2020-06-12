@@ -1,5 +1,5 @@
 # Default values for techtestapp.
 
 replicaCount: 5
-image: ${IMAGE_TAG}
+image: 365818492664.dkr.ecr.us-east-1.amazonaws.com/app:e9be7c557a8a0f58dbb6f34cabe25386d89d2d82
 dbhost: localhost

@@ -115,7 +115,7 @@ jobs:
   package:
     machine: true
     environment:
-      ECR: 365818492664.dkr.ecr.us-east-1.amazonaws.com
+      ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
       reponame: app
       NODE_ENV: production
     steps:
