@@ -1,5 +1,6 @@
 stand-up:
-	cd infra && make up
-	cd infra && make kube-up
+	cd environment && make up
+	cd environment && make kube-up
 
-	
+	cd infra && make init
+	cd infra && make up
