@@ -26,7 +26,16 @@ The helm package will contain code for the environment the app should be deploye
 - The [service.yml](/helm/acme/templates/service.yml) configures the load balancer.
 
 
-#### Automation of variable passing
+#### Pipieline 
+The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through.
+```yaml 
+export dbhost_endpoint="$(cd infra && make init && terraform output endpoint)"
+export docker_image="$(cat ./artifacts/image.txt)"
+```
+and applied to deployments by using the `--set` parmeter
+```yaml
+helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+```
 In CircleCI under the package job the handling variables for the image tag and dbhost is done by 
 
 
