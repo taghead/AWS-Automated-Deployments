@@ -152,7 +152,7 @@ jobs:
           name: Package helm
           command: | 
             
-            helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts --set dbhost="" --set image=${cat ./artifacts/image.txt}
+            helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts --set dbhost="" --set image="${cat ./artifacts/image.txt}"
       - run:
           name: Package infra
           command: |
