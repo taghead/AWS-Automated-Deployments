@@ -25,33 +25,6 @@ commands:
 
 
 jobs:
-  terraform:
-    machine: true
-    environment:
-      ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
-      reponame: app
-      NODE_ENV: production
-    steps:
-      - checkout
-
-      - run:
-          name: Set up
-          command: |
-            mkdir -p artifacts
-
-            # install AWS CLI
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-
-            # instll helm
-            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-      
-      - run: 
-          name: Build image
-          command: |
-            cd src/
-
   build:
     docker:
       - image: circleci/node:lts
@@ -153,6 +126,10 @@ jobs:
           command: |
             mkdir -p artifacts
 
+            # install terraform
+            curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.21/terraform_0.12.21_linux_amd64.zip
+            sudo unzip terraform.zip -d /usr/local/bin/
+
             # install AWS CLI
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
@@ -174,8 +151,8 @@ jobs:
       - run:
           name: Package helm
           command: | 
-
-            helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts
+            
+            helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts --set dbhost="" --set image=${cat ./artifacts/image.txt}
       - run:
           name: Package infra
           command: |
@@ -192,9 +169,8 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-      - terraform
-#      - build
-#     - package
+      - build
+      - package
 #      - integration:
 #          requires: 
 #            - build
