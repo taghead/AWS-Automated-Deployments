@@ -1,5 +1,3 @@
-# Default values for techtestapp.
-
-replicaCount: 5
-image: 365818492664.dkr.ecr.us-east-1.amazonaws.com/app:e9be7c557a8a0f58dbb6f34cabe25386d89d2d82
-dbhost: localhost
+replicaCount: 2
+image: "the is a placeholder, this variable is overwritten by config.yml"
+dbhost: "same as the image variable"

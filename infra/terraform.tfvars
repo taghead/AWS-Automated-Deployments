@@ -1,8 +1,8 @@
 subnet_ids = [
-  "",
-  ""
+  "subnet-062eded0a78f193a2",
+  "subnet-045f74398bba4b493"
 ]
-username = ""
-password = ""
-vpc_id = ""
+username = "thisistheuser"
+password = "123456789"
+vpc_id = "vpc-0788d388b46354505"
 name = "acme-db"

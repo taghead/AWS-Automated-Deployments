@@ -116,12 +116,10 @@ jobs:
     machine: true
     environment:
       ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
-      dbhost: localhost
       reponame: app
       NODE_ENV: production
     steps:
       - checkout
-      - setup-cd
       - run:
           name: Set up
           command: |
@@ -149,7 +147,7 @@ jobs:
           name: Package helm
           command: | 
             helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts 
-            helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost} --set image="$(cat ./artifacts/image.txt)"
+            
       - run:
           name: Package infra
           command: |
@@ -160,7 +158,26 @@ jobs:
           paths:
             - artifacts
 
+  deploy:
+    machine: true
+    environment:
+      ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
+      reponame: app
+      NODE_ENV: production
+    steps:
+      - checkout
+      - setup-cd
+      - run: 
+          name: Build image
+          command: |
+            export dbhost_endpoint="$(cd infra && make init && terraform output endpoint)"
+            export docker_image="$(cat ./artifacts/image.txt)"
+            helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
 
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - artifacts
 
 workflows:
   version: 2
@@ -168,6 +185,7 @@ workflows:
     jobs:
 #      - build
       - package
+      - deploy
 #      - integration:
 #          requires: 
 #            - build
