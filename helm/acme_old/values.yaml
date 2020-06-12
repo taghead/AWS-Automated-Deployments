@@ -1,0 +1,3 @@
+replicaCount: 3
+imageURL: ${IMAGE_TAG}
+dbhost: localhost

@@ -1,3 +1,5 @@
-replicaCount: 1
+# Default values for techtestapp.
+
+replicaCount: 5
 image: ${IMAGE_TAG}
 dbhost: localhost
