@@ -164,6 +164,7 @@ jobs:
     environment:
       ENV: test
     steps:
+      - checkout
       - attach_workspace:
           at: ./
       - setup-cd
