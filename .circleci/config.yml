@@ -159,8 +159,7 @@ jobs:
             - artifacts
 
   deploy-helm-test:
-    docker:
-      - image: cimg/base:2020.01
+    machine: true
     environment:
       ENV: test
     steps:
@@ -171,7 +170,7 @@ jobs:
       - run: 
           name: Build image
           command: |
-            export dbhost_endpoint="$(cd infra; ENV=test make init; clear; terraform output endpoint)"
+            export dbhost_endpoint="$(cd infra && ENV=test make init && clear && terraform output endpoint)"
             export docker_image="$(cat ./artifacts/image.txt)"
             helm upgrade acme artifacts/acme-*.tgz -i --set dbhost=${dbhost_endpoint} --set image=${docker_image}
 
