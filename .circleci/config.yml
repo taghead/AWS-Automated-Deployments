@@ -25,7 +25,7 @@ commands:
 
 
 jobs:
-  package:
+  terraform:
     machine: true
     environment:
       ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
