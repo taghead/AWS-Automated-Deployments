@@ -185,7 +185,9 @@ workflows:
     jobs:
 #      - build
       - package
-      - deploy
+      - deploy:
+          requires: 
+            - package
 #      - integration:
 #          requires: 
 #            - build
