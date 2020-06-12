@@ -170,6 +170,7 @@ jobs:
       - run: 
           name: Build image
           command: |
+            cd project
             export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
             export docker_image="$(cat ./artifacts/image.txt)"
             helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
