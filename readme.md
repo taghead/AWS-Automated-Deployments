@@ -29,7 +29,7 @@ The helm package will contain code for the environment the app should be deploye
 #### Pipieline 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through.
 ```yaml 
-export dbhost_endpoint="$(cd infra && make init && clear && terraform output endpoint)"
+cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 export docker_image="$(cat ./artifacts/image.txt)"
 ```
 and these variables are applied to deployments by using the `--set` parmeter
