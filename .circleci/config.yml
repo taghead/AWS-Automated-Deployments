@@ -126,10 +126,6 @@ jobs:
           command: |
             mkdir -p artifacts
 
-            # install terraform
-            curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.21/terraform_0.12.21_linux_amd64.zip
-            sudo unzip terraform.zip -d /usr/local/bin/
-
             # install AWS CLI
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
@@ -153,7 +149,7 @@ jobs:
           command: | 
             helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts 
             cd helm
-            helm install acme acme-${CIRCLE_SHA1}.tgz --set dbhost="" --set image="$(cat ./artifacts/image.txt)"
+            helm install acme artifacts/acme-*.tgz --set dbhost="" --set image="$(cat ./artifacts/image.txt)"
       - run:
           name: Package infra
           command: |
