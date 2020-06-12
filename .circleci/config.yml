@@ -152,7 +152,8 @@ jobs:
           name: Package helm
           command: | 
             helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts 
-            helm install acme helm/acme-${CIRCLE_SHA1}.tgz --set dbhost="" --set image="$(cat ./artifacts/image.txt)"
+            cd helm
+            helm install acme acme-${CIRCLE_SHA1}.tgz --set dbhost="" --set image="$(cat ./artifacts/image.txt)"
       - run:
           name: Package infra
           command: |
