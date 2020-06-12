@@ -25,6 +25,33 @@ commands:
 
 
 jobs:
+  package:
+    machine: true
+    environment:
+      ECR: 474697412445.dkr.ecr.us-east-1.amazonaws.com
+      reponame: app
+      NODE_ENV: production
+    steps:
+      - checkout
+
+      - run:
+          name: Set up
+          command: |
+            mkdir -p artifacts
+
+            # install AWS CLI
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+            # instll helm
+            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+      
+      - run: 
+          name: Build image
+          command: |
+            cd src/
+
   build:
     docker:
       - image: circleci/node:lts
@@ -165,8 +192,9 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-      - build
-      - package
+      - terraform
+#      - build
+#     - package
 #      - integration:
 #          requires: 
 #            - build
