@@ -3,7 +3,7 @@ up:
 	cd infra &&	terraform apply --auto-approve
 
 kube-up:
-	kops create cluster --state=s3://$(shell cd infra && terraform output kops_state_bucket_name) --name=rmit.k8s.local --zones="us-east-1a,us-east-1b" --master-size=t2.medium --yes
+	kops create cluster -v 3 --state=s3://$(shell cd infra && terraform output kops_state_bucket_name) --name=rmit.k8s.local --zones="us-west-1a,us-west-1b" --master-size=t2.medium --yes
 	aws iam attach-role-policy --role-name nodes.rmit.k8s.local --policy-arn arn:aws:iam::aws:policy/AdministratorAccess | echo "Hack"
 
 kube-down:

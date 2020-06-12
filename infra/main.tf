@@ -24,7 +24,7 @@ variable "subnet_ids" {
 
 provider "aws" {
   version = "~> 2.23"
-  region  = "us-east-1"
+  region  = "us-west-1"
 }
 
 data "aws_vpc" "main" {

@@ -168,7 +168,7 @@ jobs:
             export IMAGE_TAG=${ECR}/${reponame}:${CIRCLE_SHA1}
             echo ${IMAGE_TAG} > ../artifacts/image.txt
             docker build -t ${IMAGE_TAG} .
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR}
+            aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin ${ECR}
             docker push ${IMAGE_TAG}
 
       - run:
