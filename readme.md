@@ -25,6 +25,7 @@ The helm package will contain code for the environment the app should be deploye
 
 
 #### Pipieline 
+Things that need to be updated based on the stood infastructure [.circleci/config.yml](/.circleci/config.yml) update line 24 with the new bucket id. 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through.
 ```yaml 
 cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
