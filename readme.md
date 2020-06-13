@@ -47,10 +47,11 @@ Following this update the [.circleci/config.yml](/.circleci/config.yml) update l
 
 Ensure that the environment variable is set to test for this job by applying `ENV: test` to teh jobs environment.
 
+Run the command `kubectl create namespace test` to create test namespace.
+
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter.
 ```yaml 
-kubectl create namespace $ENV
-cd infra; make init; make up; export dbhost_endpoint=$(terraform output endpoint); cd ..;
+cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
 export docker_image="$(cat ./artifacts/image.txt)"
 
@@ -63,7 +64,7 @@ This will also stand up the database. Here is some screen shots of it in action.
 
 
 
-`kubectl create namespace test`
+
 `kubectl delete namespace test`
 `helm uninstall acme -n test`
 
