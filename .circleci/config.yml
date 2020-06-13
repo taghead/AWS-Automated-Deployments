@@ -181,6 +181,19 @@ jobs:
             export docker_image="$(cat ./artifacts/image.txt)"
             
             cd src/migrations
+            echo "
+            {
+            \"dev\": {
+            \"driver\": \"pg\",
+            \"user\": "$db_user",
+            \"host\": "$dbhost_endpoint"
+            \"password\": "$db_pass",
+            \"database\": "$db_name",
+            \"port\": 5432,
+            \"ssl\": false
+            }
+            }
+            " database.json
             npm install db-migrate
             npx db-migrate up
 
