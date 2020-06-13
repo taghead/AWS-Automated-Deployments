@@ -166,13 +166,13 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-      - e2e
       - package
       - deploy-helm-test:
           requires: 
             - package
       - e2e:
           requires:
+            - package
             - deploy-helm-test
 #          filters:
 #            branches:
