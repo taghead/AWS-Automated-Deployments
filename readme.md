@@ -37,7 +37,5 @@ helm install acme artifacts/acme-*.tgz -i --wait --set dbhost=${dbhost_endpoint}
 ```
 In CircleCI under the package job the handling variables for the image tag and dbhost is done by 
 
-
-
 kubectl create namespace test
 helm unistall acme -n test
