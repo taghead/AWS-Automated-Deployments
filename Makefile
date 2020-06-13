@@ -28,6 +28,10 @@ all-up:
 	make db-test-up
 
 all-down:
+	helm uninstall acme -n prod
+	kubectl delete namespace prod
+	helm uninstall acme -n test
+	kubectl delete namespace test
 	make db-test-down
 	make db-prod-down
 	make env-down

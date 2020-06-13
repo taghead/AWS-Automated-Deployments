@@ -118,15 +118,18 @@ When this job is run the finished output should be as per screenshots below.
 
 `kubectl delete namespace test`
 
-`cd infra && ENV=test make down`
+`cd infra && ENV=test make init && ENV=test make down`
 
 ## Production Environment
 
 ##### CircleCI Integration and Deployment 
 
-The job `deploy-helm-prod` contains two alterations compared to `deploy-helm-test`.
+Due to the use of variables to define the enviroment majority of the code can remain the same. The job `deploy-helm-prod` (which is specifically for deploying into production) contains two alterations compared to `deploy-helm-test`.
 
-Ensure that the environment variable is set to test for this job by applying `ENV: prod` to the jobs environment.
+- Ensure that the environment variable is set to test for this job by applying `ENV: prod` to the jobs environment.
+- The `kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate --environment production` contains the additional parameter `--env production`
+
+
 
 So What this does is:
   - Create a namespace 
@@ -146,4 +149,4 @@ Here is some screen shots of it in action.
 
 `kubectl delete namespace prod`
 
-`cd infra && ENV=prod make down`
+`cd infra && ENV=prod make init && ENV=prod make down`

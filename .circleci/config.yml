@@ -184,7 +184,7 @@ jobs:
             
             helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
             
-            kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate --environment production
+            kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate --env production
             
             helm list -n $ENV
             kubectl get services -n $ENV
