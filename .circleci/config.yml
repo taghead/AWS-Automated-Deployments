@@ -112,6 +112,7 @@ jobs:
       DB_PASSWORD: password
       DB_NAME: servian
       DB_HOSTNAME: localhost
+      ENV: test
 
     steps: 
       - checkout
@@ -135,7 +136,7 @@ jobs:
             cd src
 
             npm run start:prod & 
-            npx wait-on http://localhost:3000
+            npx wait-on http://$ENDPOINT
             
             npm run test-e2e
 
