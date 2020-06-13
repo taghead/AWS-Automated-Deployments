@@ -168,10 +168,6 @@ jobs:
       - attach_workspace:
           at: ./
       - setup-cd
-      - run:
-          name: Create Testing Namespace
-          command: |
-            kubectl create namespace test
       - run: 
           name: Deploy to Test Cluster 
           command: |
