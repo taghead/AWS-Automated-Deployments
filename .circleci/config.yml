@@ -178,6 +178,8 @@ jobs:
             cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
             export docker_image="$(cat ./artifacts/image.txt)"
             helm upgrade acme artifacts/acme-*.tgz -i -n test --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+            helm list -n test 
+            kubectl get services -n test
 
       - persist_to_workspace:
           root: ./

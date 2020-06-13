@@ -33,7 +33,7 @@ export docker_image="$(cat ./artifacts/image.txt)"
 ```
 and these variables are applied to deployments by using the `--set` parmeter
 ```yaml
-helm install acme artifacts/acme-*.tgz --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+helm install acme artifacts/acme-*.tgz -i --wait --set dbhost=${dbhost_endpoint} --set image=${docker_image}
 ```
 In CircleCI under the package job the handling variables for the image tag and dbhost is done by 
 
