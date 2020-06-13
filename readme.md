@@ -71,11 +71,11 @@ So What this does is:
   - Deploy HELM Chart to the Kubernetes cluster
 Here is some screen shots of it in action.
 
-![ENV_VAR](/img/Task_C_01.PNG)  
+![ENV_VAR](/img/Task_C_01.png)  
 
-![ENV_VAR](/img/Task_C_02.PNG)
+![ENV_VAR](/img/Task_C_02.png)
 
-![ENV_VAR](/img/Task_C_03.PNG)
+![ENV_VAR](/img/Task_C_03.png)
 
 ##### End to End Testing
 
@@ -93,6 +93,7 @@ The predefined enviroment variables are altered to utilize the CircleCI variable
       ENV: test
 ```
 
+To being the E2E a requirement is to alter teh DB_HOSTNAME and grab it. This is done through `terraform output endpoint` with the help of the remote backend. Th get the correct ELB endpoint `kubectl` is used. 
 ```
 cd infra; make init; export DB_HOSTNAME=$(terraform output endpoint); cd ..;
 export ENDPOINT="http://$(kubectl get service/acme -n test -o=yaml | grep hostname | cut -d: -f2- | sed -e 's/^[ \t]*//'):80"

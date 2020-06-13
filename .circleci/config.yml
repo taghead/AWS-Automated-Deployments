@@ -162,17 +162,51 @@ jobs:
           paths:
             - artifacts
 
+  deploy-helm-prod:
+    docker:
+     - image: cimg/base:2020.01 
+    environment:
+      ENV: prod
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./
+      - setup-cd
+      - run: 
+          name: Deploy to Test Cluster 
+          command: |
+            kubectl create namespace $ENV
+            cd infra; make init; 
+            make up; 
+            export dbhost_endpoint=$(terraform output endpoint); cd ..;
+
+            export docker_image="$(cat ./artifacts/image.txt)"
+            
+            helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
+            
+            kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate --environment production
+            
+            helm list -n $ENV
+            kubectl get services -n $ENV
+            kubectl get pods -n $ENV
+
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - artifacts
+
 workflows:
   version: 2
   build-test-package:
     jobs:
-      - package
-      - deploy-helm-test:
-          requires: 
-            - package
-      - e2e:
-          requires:
-            - deploy-helm-test
+    - deploy-helm-prod
+#      - package
+#      - deploy-helm-test:
+#          requires: 
+#            - package
+#      - e2e:
+#          requires:
+#            - deploy-helm-test
 #          filters:
 #            branches:
 #              only: master
