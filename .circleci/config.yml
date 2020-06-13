@@ -181,7 +181,7 @@ jobs:
             export docker_image="$(cat ./artifacts/image.txt)"
             
             cd src/migrations
-            npm install -g db-migrate
+            npm install db-migrate
             db-migrate up
 
             helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
