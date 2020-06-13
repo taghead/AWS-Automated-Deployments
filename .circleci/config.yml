@@ -182,7 +182,7 @@ jobs:
             
             cd src/migrations
             npm install db-migrate
-            db-migrate up
+            npx db-migrate up
 
             helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
             helm list -n $ENV
