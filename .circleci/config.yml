@@ -174,33 +174,14 @@ jobs:
             #kubectl create namespace test
             
             cd infra; 
-            make init;
-            #make up;
-
-            terraform output endpoint > ../artifacts/dbhost.txt         
-
-            cd ..
-
-            cd ./src/migrations
-            echo "
-            {
-            \"dev\": {
-            \"driver\": \"pg\",
-            \"user\": \""$db_user"\",
-            \"host\": \""$(cat ../../artifacts/dbhost.txt)"\",
-            \"password\": \""$db_pass"\",
-            \"database\": \""$db_name"\",
-            \"port\": 5432,
-            \"ssl\": false
-            }
-            }
-            " > database.json
-            npm install db-migrate
-            npm install db-migrate-pg
-            npx db-migrate up
-            cd ../..
-
-            helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=$(cat ./artifacts/dbhost.txt),image=$(cat ./artifacts/image.txt),dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
+            #make init;
+            make up;
+            
+            export dbhost_endpoint=$(terraform output endpoint); cd ..;
+            export docker_image="$(cat ./artifacts/image.txt)"
+            
+            helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
+            kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate 
             helm list -n $ENV
             kubectl get services -n $ENV
             kubectl get pods -n $ENV
