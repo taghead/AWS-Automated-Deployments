@@ -90,7 +90,7 @@ jobs:
 
     steps: 
       - checkout
-
+      - setup-cd
       - run:
           name: set up environment
           command: |
@@ -105,6 +105,8 @@ jobs:
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
+            cd infra; make init; export DB_HOSTNAME=$(terraform output endpoint); cd ..;
+            ENDPOINT=$(kubectl get service/acme -n test -o=yaml | grep hostname | cut -d: -f2- | sed -e 's/^[ \t]*//')
             cd src
 
             npm run start:prod & 
@@ -196,10 +198,11 @@ workflows:
   build-test-package:
     jobs:
 #      - build
-      - package
-      - deploy-helm-test:
-          requires: 
-            - package
+       - e2e
+#      - package
+#      - deploy-helm-test:
+#          requires: 
+#            - package
 #      - integration:
 #          requires: 
 #            - build
