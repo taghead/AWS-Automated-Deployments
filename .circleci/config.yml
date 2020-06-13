@@ -206,9 +206,9 @@ workflows:
       - e2e:
           requires:
             - deploy-helm-test
+      - approval:
+          type: approval
       - deploy-helm-prod:
           requires: 
             - package
-          filters:
-            branches:
-              only: master
+            - approval
