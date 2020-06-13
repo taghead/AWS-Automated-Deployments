@@ -70,8 +70,11 @@ So What this does is:
   - Run database migration
   - Deploy HELM Chart to the Kubernetes cluster
 Here is some screen shots of it in action.
+
 ![ENV_VAR](/img/Task_B_01.PNG)  
+
 ![ENV_VAR](/img/Task_B_02.PNG)
+
 ![ENV_VAR](/img/Task_B_03.PNG)
 
 ##### Cleanup for Testing 
