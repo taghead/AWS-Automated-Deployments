@@ -179,13 +179,15 @@ jobs:
 
             terraform output endpoint > ../artifacts/dbhost.txt         
 
-            cd ../src/migrations
+            cd ..
+
+            cd ./src/migrations
             echo "
             {
             \"dev\": {
             \"driver\": \"pg\",
             \"user\": \""$db_user"\",
-            \"host\": \""$(cat ./artifacts/dbhost.txt)"\",
+            \"host\": \""$(cat ../../artifacts/dbhost.txt)"\",
             \"password\": \""$db_pass"\",
             \"database\": \""$db_name"\",
             \"port\": 5432,
@@ -196,6 +198,7 @@ jobs:
             npm install db-migrate
             npm install db-migrate-pg
             npx db-migrate up
+            cd ../..
 
             helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=$(cat ./artifacts/dbhost.txt),image=$(cat ./artifacts/image.txt),dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
             helm list -n $ENV
