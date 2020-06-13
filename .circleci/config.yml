@@ -175,7 +175,7 @@ jobs:
 
             export docker_image="$(cat ./artifacts/image.txt)"
             
-            helm upgrade acme artifacts/acme-*.tgz -i -n test --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+            helm upgrade acme artifacts/acme-*.tgz -i -n test --set dbhost=${dbhost_endpoint}, image=${docker_image}, dbname=$db_name, dbuser=$db_user, dbpass=$db_pass
             helm list -n test 
             kubectl get services -n test
 

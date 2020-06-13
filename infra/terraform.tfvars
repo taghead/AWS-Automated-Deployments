@@ -3,6 +3,6 @@ subnet_ids = [
   "subnet-045f74398bba4b493"
 ]
 username = "thisistheuser"
-password = "123456789"
+password = "thisisthepassword"
 vpc_id = "vpc-0788d388b46354505"
 name = "acme-db"
