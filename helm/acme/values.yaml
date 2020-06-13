@@ -1,6 +1,22 @@
 replicaCount: 1
-image: "the is a placeholder, this variable is overwritten by config.yml"
-dbhost: "same as the image variable"
-dbname: "acme-db"
-dbuser: "thisistheuser"
-dbpass: "thisisthepassword"
+image: "These placeholder are overwritten by config.yml
+Feel free to do this maze while waiting for deployment.
+-------------------------------------
+| _____ |   | ___ | ___ ___ | |   | |
+| |   | |_| |__ | |_| __|____ | | | |
+| | | |_________|__ |______ |___|_| |
+| |_|   | _______ |______ |   | ____|
+| ___ | |____ | |______ | |_| |____ |
+|___|_|____ | |   ___ | |________ | |
+|   ________| | |__ | |______ | | | |
+| | | ________| | __|____ | | | __| |
+|_| |__ |   | __|__ | ____| | |_| __|
+|   ____| | |____ | |__ |   |__ |__ |
+| |_______|_______|___|___|___|_____|
+
+Pretty amazing.
+"
+dbhost: "placeholder"
+dbname: "placeholder"
+dbuser: "placeholder"
+dbpass: "placeholder"
