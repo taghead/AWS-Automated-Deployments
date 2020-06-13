@@ -193,7 +193,7 @@ jobs:
             \"ssl\": false
             }
             }
-            " database.json
+            " > database.json
             npm install db-migrate
             npx db-migrate up
 
