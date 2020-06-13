@@ -200,15 +200,15 @@ workflows:
   build-test-package:
     jobs:
       - package
+      - deploy-helm-test:
+          requires: 
+            - package
+      - e2e:
+          requires:
+            - deploy-helm-test
       - deploy-helm-prod:
           requires: 
             - package
-#      - deploy-helm-test:
-#          requires: 
-#            - package
-#      - e2e:
-#          requires:
-#            - deploy-helm-test
-#          filters:
-#            branches:
-#              only: master
+          filters:
+            branches:
+              only: master
