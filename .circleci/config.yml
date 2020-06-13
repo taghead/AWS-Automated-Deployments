@@ -173,7 +173,7 @@ jobs:
           command: |
             kubectl create namespace $ENV
             cd infra; make init; 
-            #make up; 
+            make up; 
             export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
             export docker_image="$(cat ./artifacts/image.txt)"

@@ -49,14 +49,17 @@ Ensure that the environment variable is set to test for this job by applying `EN
 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter.
 ```yaml 
-kubectl create namespace test
-
-cd infra; make init; make up;
-
+kubectl create namespace $ENV
+cd infra; make init; 
+make up; 
 export dbhost_endpoint=$(terraform output endpoint); cd ..;
+
 export docker_image="$(cat ./artifacts/image.txt)"
 
 helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
+
+kubectl exec deployment/acme -n ${ENV} -- node_modules/.bin/sequelize db:migrate 
+
 helm list -n $ENV
 kubectl get services -n $ENV
 kubectl get pods -n $ENV
