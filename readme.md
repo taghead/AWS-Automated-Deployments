@@ -39,7 +39,4 @@ In CircleCI under the package job the handling variables for the image tag and d
 
 
 
-      - run:
-          name: Create Testing Namespace
-          command: |
-            kubectl create namespace test
+kubectl create namespace test
