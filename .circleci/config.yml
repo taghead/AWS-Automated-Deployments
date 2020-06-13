@@ -49,6 +49,11 @@ commands:
           mv kops-linux-amd64 /usr/local/bin/kops
           kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-l7m1v7
 
+          cd src
+          npm install 
+          apt update
+          apt install postgresql-client-10 -y
+
 jobs:
   build:
     docker:
@@ -108,8 +113,8 @@ jobs:
           POSTGRES_PASSWORD: password
     environment:
       QAW_HEADLESS: true
-      DB_USERNAME: postgres
-      DB_PASSWORD: password
+      DB_USERNAME: $db_user
+      DB_PASSWORD: $db_pass
       DB_NAME: servian
       DB_HOSTNAME: localhost
       ENV: test
@@ -117,17 +122,22 @@ jobs:
     steps: 
       - checkout
       - setup-cd-e2e
+      - run:
+          name: set up environment
+          command: |
+
+            
+            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
       - run: 
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
             cd infra; make init; export DB_HOSTNAME=$(terraform output endpoint); cd ..;
             ENDPOINT="https://$(kubectl get service/acme -n test -o=yaml | grep hostname | cut -d: -f2- | sed -e 's/^[ \t]*//')"
+            
             cd src
-
             npm run start:prod & 
             npx wait-on $ENDPOINT
-            
             npm run test-e2e
 
   package:
