@@ -16,9 +16,8 @@ The infastruture must be stood in a specific order due to dependencies.
 
    3. Stand the db environment by deciding on deploying a production or testing then prefix the `make init` and `make up` commands with that environment name. Example `ENV=test make up`.
 
-## Kube and HELM Testing Environment
 
-##### HELM Scaffolding
+## HELM Scaffolding
 The helm package will contain code for the environment the app should be deployed into. Here is an overview of the files located in [/helm/acme](/helm/acme):
 - The [values.yaml](/helm/values) contains variables. Noteably the variables image and dbhost will be overwritten in the deployment pipeline in order to better handle the automation.
   - Stores variables
@@ -35,6 +34,7 @@ The helm package will contain code for the environment the app should be deploye
   - Has port 80 open
   - Redirects to target group of port 3000
 
+## Kube Testing Environment
 
 ##### CircleCI Integration and Deployment 
 
@@ -70,8 +70,13 @@ So What this does is:
   - Run database migration
   - Deploy HELM Chart to the Kubernetes cluster
 Here is some screen shots of it in action.
+![ENV_VAR](/img/Task_B_01.PNG)  
+![ENV_VAR](/img/Task_B_02.PNG)
+![ENV_VAR](/img/Task_B_03.PNG)
 
 ##### Cleanup for Testing 
 `helm uninstall acme -n test`
+
 `kubectl delete namespace test`
+
 `cd infra && ENV=test make down`
