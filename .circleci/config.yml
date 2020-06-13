@@ -115,7 +115,7 @@ jobs:
 
     steps: 
       - checkout
-      - setup-cd-no-sudo
+      - setup-cd-e2e
       - run:
           name: set up environment
           command: |
