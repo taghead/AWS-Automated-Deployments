@@ -34,7 +34,7 @@ The helm package will contain code for the environment the app should be deploye
   - Has port 80 open
   - Redirects to target group of port 3000
 
-## Kube Testing Environment
+## Test Environment
 
 ##### CircleCI Integration and Deployment 
 
@@ -71,13 +71,48 @@ So What this does is:
   - Deploy HELM Chart to the Kubernetes cluster
 Here is some screen shots of it in action.
 
-![ENV_VAR](/img/Task_B_01.PNG)  
+![ENV_VAR](/img/Task_C_01.PNG)  
 
-![ENV_VAR](/img/Task_B_02.PNG)
+![ENV_VAR](/img/Task_C_02.PNG)
 
-![ENV_VAR](/img/Task_B_03.PNG)
+![ENV_VAR](/img/Task_C_03.PNG)
 
-##### Cleanup for Testing 
+##### End to End Testing
+
+End to end testing is performed using the CircleCI file located at [/.circleci/config.yml](/.circleci/config.yml). When the job e2e is performed it will be done so utilizing the following.
+
+The predefined enviroment variables are altered to utilize the CircleCI variables, this includes the an extra addition variables for ENV.
+
+```
+    environment:
+      QAW_HEADLESS: true
+      DB_USERNAME: $db_user
+      DB_PASSWORD: $db_pass
+      DB_NAME: servian
+      DB_HOSTNAME: localhost
+      ENV: test
+```
+
+```
+cd infra; make init; export DB_HOSTNAME=$(terraform output endpoint); cd ..;
+export ENDPOINT="http://$(kubectl get service/acme -n test -o=yaml | grep hostname | cut -d: -f2- | sed -e 's/^[ \t]*//'):80"
+echo $ENDPOINT
+echo $DB_HOSTNAME
+
+cd src
+npm run start & 
+npx wait-on $ENDPOINT
+npm run test-e2e
+```
+When this job is run the finished output should be as per screenshots below.
+
+![E2E_1](/img/Task_D_01.png)
+
+![E2E_1](/img/Task_D_02.png)
+
+
+
+##### Cleanup
 `helm uninstall acme -n test`
 
 `kubectl delete namespace test`

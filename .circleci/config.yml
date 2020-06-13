@@ -52,56 +52,6 @@ commands:
           apt install postgresql-client-10 -y
 
 jobs:
-  build:
-    docker:
-      - image: circleci/node:lts
-
-    steps:
-      - checkout
-      
-      - run: |
-          cd src
-          npm install
-          npm run test-lint
-          npm run test-unit
-          npm run test-coverage
-          mkdir -p test-results/unit 
-          mv test-results.xml test-results/unit/results.xml
-      
-      - store_test_results:
-          path: src/test-results
-
-  integration:
-    docker:
-      - image: circleci/node:lts
-      - image: postgres:10.7
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-
-      - run: 
-          name: Set up environment
-          command: |
-            wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
-            echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
-            sudo apt update
-            sudo apt install postgresql-client-10
-            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
-            cd src
-            npm install
-
-      - run:
-          name: Run integration tests
-          command: |
-            cd src
-            npm run test-integration
-            mkdir -p test-results/integration 
-            mv test-results.xml test-results/integration/results.xml
-
-      - store_test_results:
-          path: src/test-results
-  
   e2e:
     docker:
       - image: qawolf/qawolf:v0.9.2
@@ -216,22 +166,14 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-#      - build
-       - e2e
-#      - package
-#      - deploy-helm-test:
-#          requires: 
-#            - package
-#      - integration:
-#          requires: 
-#            - build
-#      - e2e:
-#          requires:
-#            - build
-#      - package:
-#          requires:
-#            - e2e
-#            - integration
+      - e2e
+      - package
+      - deploy-helm-test:
+          requires: 
+            - package
+      - e2e:
+          requires:
+            - deploy-helm-test
 #          filters:
 #            branches:
 #              only: master
