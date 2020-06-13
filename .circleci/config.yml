@@ -22,7 +22,28 @@ commands:
           chmod +x kops-linux-amd64
           sudo mv kops-linux-amd64 /usr/local/bin/kops
           kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-l7m1v7
+  setup-cd-no-sudo:
+    steps:
+    - run: 
+        name: Configure environment
+        command: |
+          # install terraform
+          curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
+          unzip terraform.zip -d /usr/local/bin/
+          
+          # install helm
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
+          # install kubectl
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+          chmod +x ./kubectl 
+          mv ./kubectl /usr/local/bin/kubectl
+
+          # configure kops
+          curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+          chmod +x kops-linux-amd64
+          mv kops-linux-amd64 /usr/local/bin/kops
+          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-l7m1v7
 
 jobs:
   build:
@@ -90,7 +111,7 @@ jobs:
 
     steps: 
       - checkout
-      - setup-cd
+      - setup-cd-no-sudo
       - run:
           name: set up environment
           command: |
