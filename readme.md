@@ -45,14 +45,15 @@ The package job handles variables the docker image. It stores the image onto the
 
 Following this update the [.circleci/config.yml](/.circleci/config.yml) update line 24 with the new bucket id. 
 
-Ensure that the environment variable is set to test for this job by applying `ENV: test` to teh jobs environment.
-
-Run the command `kubectl create namespace test` to create test namespace.
+Ensure that the environment variable is set to test for this job by applying `ENV: test` to the jobs environment.
 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter.
 ```yaml 
-cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
+kubectl create namespace test
 
+cd infra; make init; make up;
+
+export dbhost_endpoint=$(terraform output endpoint); cd ..;
 export docker_image="$(cat ./artifacts/image.txt)"
 
 helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
@@ -60,11 +61,14 @@ helm list -n $ENV
 kubectl get services -n $ENV
 kubectl get pods -n $ENV
 ```
-This will also stand up the database. Here is some screen shots of it in action.
+So What this does is:
+  - Create a namespace 
+  - Deploy a database
+  - Run database migration
+  - Deploy HELM Chart to the Kubernetes cluster
+Here is some screen shots of it in action.
 
-
-
-
-`kubectl delete namespace test`
+##### Cleanup for Testing 
 `helm uninstall acme -n test`
-
+`kubectl delete namespace test`
+`cd infra && ENV=test make down`

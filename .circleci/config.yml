@@ -160,7 +160,7 @@ jobs:
 
   deploy-helm-test:
     docker:
-     - image: cimg/base:2020.01 
+     - image: circleci/node:lts
     environment:
       ENV: test
     steps:
@@ -171,10 +171,19 @@ jobs:
       - run: 
           name: Deploy to Test Cluster 
           command: |
-            cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
-
+            #kubectl create namespace test
+            
+            cd infra; 
+            make init;
+            #make up;
+                        
+            export dbhost_endpoint=$(terraform output endpoint); cd ..;
             export docker_image="$(cat ./artifacts/image.txt)"
             
+            cd src/migrations
+            npm install -g db-migrate
+            db-migrate up
+
             helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
             helm list -n $ENV
             kubectl get services -n $ENV
