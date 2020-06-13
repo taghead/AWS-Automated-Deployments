@@ -47,13 +47,14 @@ Following this update the [.circleci/config.yml](/.circleci/config.yml) update l
 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter
 ```yaml 
-cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
+cd infra; make init; make up; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
 export docker_image="$(cat ./artifacts/image.txt)"
 
 helm upgrade acme artifacts/acme-*.tgz -i --wait -n $ENV --set dbhost=${dbhost_endpoint},image=${docker_image},dbname=$db_name,dbuser=$db_user,dbpass=$db_pass
 helm list -n $ENV
 kubectl get services -n $ENV
+kubectl get pods -n $ENV
 ```
 
 
