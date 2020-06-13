@@ -119,3 +119,31 @@ When this job is run the finished output should be as per screenshots below.
 `kubectl delete namespace test`
 
 `cd infra && ENV=test make down`
+
+## Production Environment
+
+##### CircleCI Integration and Deployment 
+
+The job `deploy-helm-prod` contains two alterations compared to `deploy-helm-test`.
+
+Ensure that the environment variable is set to test for this job by applying `ENV: prod` to the jobs environment.
+
+So What this does is:
+  - Create a namespace 
+  - Deploy a database
+  - Run database migration
+  - Deploy HELM Chart to the Kubernetes cluster
+Here is some screen shots of it in action.
+
+![ENV_VAR](/img/Task_E_01.png)  
+
+![ENV_VAR](/img/Task_E_02.png)
+
+![ENV_VAR](/img/Task_E_03.png)
+
+##### Cleanup
+`helm uninstall acme -n prod`
+
+`kubectl delete namespace prod`
+
+`cd infra && ENV=prod make down`

@@ -199,8 +199,10 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-    - deploy-helm-prod
-#      - package
+      - package
+      - deploy-helm-prod:
+          requires: 
+            - package
 #      - deploy-helm-test:
 #          requires: 
 #            - package
