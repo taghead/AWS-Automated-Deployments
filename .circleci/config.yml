@@ -159,7 +159,8 @@ jobs:
             - artifacts
 
   deploy-helm-test:
-    machine: true
+    docker:
+     - image: cimg/base:2020.01 
     environment:
       ENV: test
     steps:
@@ -167,8 +168,12 @@ jobs:
       - attach_workspace:
           at: ./
       - setup-cd
+      - run:
+          name: Create Testing Namespace
+          command: |
+            kubectl create namespace test
       - run: 
-          name: Build image
+          name: Deploy to Test Cluster 
           command: |
             cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
             export docker_image="$(cat ./artifacts/image.txt)"
