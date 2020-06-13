@@ -173,7 +173,7 @@ jobs:
           at: ./
       - setup-cd
       - run: 
-          name: Deploy to Test Cluster 
+          name: Deploy to Prod Cluster 
           command: |
             kubectl create namespace $ENV
             cd infra; make init; 
