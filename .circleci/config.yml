@@ -172,7 +172,6 @@ workflows:
             - package
       - e2e:
           requires:
-            - package
             - deploy-helm-test
 #          filters:
 #            branches:
