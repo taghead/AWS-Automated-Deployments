@@ -47,6 +47,7 @@ Following this update the [.circleci/config.yml](/.circleci/config.yml) update l
 
 The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter
 ```yaml 
+kubectl create namespace test
 cd infra; make init; make up; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
 export docker_image="$(cat ./artifacts/image.txt)"
