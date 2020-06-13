@@ -16,7 +16,7 @@ The infastruture must be stood in a specific order due to dependencies.
 
    3. Stand the db environment by deciding on deploying a production or testing then prefix the `make init` and `make up` commands with that environment name. Example `ENV=test make up`.
 
-## Kube and HELM 
+## Kube and HELM Testing Environment
 
 ##### HELM Scaffolding
 The helm package will contain code for the environment the app should be deployed into. Here is an overview of the files located in [/helm/acme](/helm/acme):
@@ -45,9 +45,11 @@ The package job handles variables the docker image. It stores the image onto the
 
 Following this update the [.circleci/config.yml](/.circleci/config.yml) update line 24 with the new bucket id. 
 
-The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter
+Ensure that the environment variable is set to test for this job by applying `ENV: test` to teh jobs environment.
+
+The CircleCI pipeline configuration exports the database endpoint and the image as variables this is done through. Additionaly these variables are applied to `helm install` by using the `--set` parmeter.
 ```yaml 
-kubectl create namespace test
+kubectl create namespace $ENV
 cd infra; make init; make up; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
 export docker_image="$(cat ./artifacts/image.txt)"
@@ -57,6 +59,7 @@ helm list -n $ENV
 kubectl get services -n $ENV
 kubectl get pods -n $ENV
 ```
+This will also stand up the database. Here is some screen shots of it in action.
 
 
 
