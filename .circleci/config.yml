@@ -22,11 +22,15 @@ commands:
           chmod +x kops-linux-amd64
           sudo mv kops-linux-amd64 /usr/local/bin/kops
           kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-l7m1v7
-  setup-cd-no-sudo:
+  setup-cd-e2e:
     steps:
     - run: 
         name: Configure environment
         command: |
+          # install unzip
+          apt update
+          apt install unzip
+
           # install terraform
           curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
           unzip terraform.zip -d /usr/local/bin/
