@@ -1,6 +1,6 @@
 replicaCount: 1
-image: "Variables are overwritten by config.yml"
-dbhost: "placeholder"
-dbuser: "thisistheuser"
-dbpass: "123456789"
+image: "the is a placeholder, this variable is overwritten by config.yml"
+dbhost: "same as the image variable"
 dbname: "acme-db"
+dbuser: "thisistheuser"
+dbpass: "thisisthepassword"
