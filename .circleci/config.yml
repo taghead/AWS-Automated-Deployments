@@ -171,7 +171,7 @@ jobs:
       - run: 
           name: Deploy to Test Cluster 
           command: |
-            cd infra; make init; make up; export dbhost_endpoint=$(terraform output endpoint); cd ..;
+            cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
 
             export docker_image="$(cat ./artifacts/image.txt)"
             
