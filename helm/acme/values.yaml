@@ -1,3 +1,6 @@
 replicaCount: 1
-image: "the is a placeholder, this variable is overwritten by config.yml"
-dbhost: "same as the image variable"
+image: "Variables are overwritten by config.yml"
+dbhost: "placeholder"
+dbuser: "placeholder"
+dbpass: "placeholder"
+dbname: "placeholder"

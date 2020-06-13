@@ -17,7 +17,13 @@ spec:
         imagePullPolicy: Always
         name: "acme"
         env:
-          - name: VTT_DBHOST
-            value: {{ .Values.dbhost }}
+        - name: DB_HOSTNAME
+          value: {{ .Values.dbhost }}
+        - name: DB_USERNAME
+          value: {{ .Values.dbuser }}
+        - name: DB_PASSWORD
+          value: {{ .Values.dbpass }}
+        - name: DB_NAME
+          value: {{ .Values.dbname }}
         ports:
         - containerPort: 3000

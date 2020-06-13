@@ -173,7 +173,7 @@ jobs:
           command: |
             cd infra; make init; export dbhost_endpoint=$(terraform output endpoint); cd ..;
             export docker_image="$(cat ./artifacts/image.txt)"
-            helm upgrade acme artifacts/acme-*.tgz -i -n test --set dbhost=${dbhost_endpoint} --set image=${docker_image}
+            helm upgrade acme artifacts/acme-*.tgz -i -n test --set dbhost=${dbhost_endpoint} --set image=${docker_image} --set dbuser=${db_name} --set dbpass=${db_pass} --set dbuser${db_user}
             helm list -n test 
             kubectl get services -n test
 
