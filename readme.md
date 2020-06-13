@@ -40,3 +40,4 @@ In CircleCI under the package job the handling variables for the image tag and d
 
 
 kubectl create namespace test
+helm unistall acme -n test
