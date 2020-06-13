@@ -34,9 +34,6 @@ commands:
           # install terraform
           curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
           unzip terraform.zip -d /usr/local/bin/
-          
-          # install helm
-          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
           # install kubectl
           curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
@@ -122,12 +119,6 @@ jobs:
     steps: 
       - checkout
       - setup-cd-e2e
-      - run:
-          name: set up environment
-          command: |
-
-            
-            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
       - run: 
           name: End 2 end tests
           no_output_timeout: 2m
@@ -138,7 +129,7 @@ jobs:
             echo $DB_HOSTNAME
 
             cd src
-            npm run start:prod & 
+            npm run start & 
             npx wait-on $ENDPOINT
             npm run test-e2e
 
