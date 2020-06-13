@@ -136,11 +136,15 @@ So What this does is:
   - Deploy HELM Chart to the Kubernetes cluster
 Here is some screen shots of it in action.
 
-![ENV_VAR](/img/Task_E_01.png)  
+![PROD](/img/Task_E_01.png)  
 
-![ENV_VAR](/img/Task_E_02.png)
+![PROD](/img/Task_E_02.png)
 
-![ENV_VAR](/img/Task_E_03.png)
+![PROD](/img/Task_E_03.png)
+
+##### Approval
+
+![APR](/img/Task_F_01.png)
 
 ##### Cleanup
 `helm uninstall acme -n prod`
