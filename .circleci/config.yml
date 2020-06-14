@@ -195,11 +195,50 @@ jobs:
           paths:
             - artifacts
 
+  cloudwatch:
+    docker:
+     - image: cimg/base:2020.01 
+    environment:
+      ENV: amazon-cloudwatch
+    steps:
+      - checkout
+      - run: 
+          name: Enabling cloudwatch
+          command: |
+            kubectl create namespace ${ENV}
+            kubectl create configmap cluster-info --from-literal=cluster.name=rmit.k8s.local --from-literal=logs.region=us-east-1 -n ${ENV}
+            wget https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluentd/fluentd.yaml
+            kubectl apply -f fluentd.yaml
+
+  clean-up:
+    docker:
+     - image: cimg/base:2020.01 
+    steps:
+      - checkout
+      - run: 
+          name: Destroying Kube Namespace
+          command: |
+            make kube-test-down
+            make kube-prod-down
+      - run: 
+          name: Destroying Database
+          command: |
+            make db-test-down
+            make db-prod-down
+      - run: 
+          name: Destroying Environment
+          command: |
+            make all-down
+
+
 workflows:
   version: 2
   build-test-package:
     jobs:
-      - package
+      - cloudwatch
+      - package:
+          requires:
+            - cloudwatch
       - deploy-helm-test:
           requires: 
             - package
@@ -212,3 +251,8 @@ workflows:
           requires: 
             - package
             - approval
+      - cleanup-approval:
+          type: approval
+      - clean-up:
+          requires:
+            - cleanup-approval

@@ -1,16 +1,14 @@
-db-test-up:
-	cd infra && ENV=test make init
-	cd infra && ENV=test make up
-
-db-prod-up:
-	cd infra && ENV=prod make init
-	cd infra && ENV=prod make up
-
 db-test-down:
+	cd infra && ENV=test make down
+
+db-prod-down:
+	cd infra && ENV=prod make down
+
+kube-test-down:
 	helm uninstall acme -n test
 	kubectl delete namespace test
 
-db-prod-down:
+kube-prod-down:
 	helm uninstall acme -n prod
 	kubectl delete namespace prod
 
@@ -30,3 +28,9 @@ all-up:
 all-down:
 	cd environment && make kube-down
 	cd environment && make down
+
+enable-cloudwatch:
+	kubectl create namespace amazon-cloudwatch
+	kubectl create configmap cluster-info --from-literal=cluster.name=rmit.k8s.local --from-literal=logs.region=us-east-1 -n amazon-cloudwatch
+	wget https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluentd/fluentd.yaml
+	kubectl apply -f fluentd.yaml
