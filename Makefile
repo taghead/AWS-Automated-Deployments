@@ -1,8 +1,8 @@
 db-test-down:
-	cd infra && ENV=test make down
+	cd infra && ENV=test make init && ENV=test make down
 
 db-prod-down:
-	cd infra && ENV=prod make down
+	cd infra && ENV=prod make init && ENV=prod make down
 
 kube-test-down:
 	helm uninstall acme -n test
@@ -18,7 +18,6 @@ apply-vars:
 	sed -i "/--backend-config/c\	terraform init --backend-config=\"key=state/"$$"{ENV}.tfstate\" --backend-config=\"dynamodb_table=RMIT-locktable-$(shell  cd ./environment/infra && terraform output state_bucket_name | cut -d "-" -f 3 )\" --backend-config=\"bucket=rmit-tfstate-$(shell  cd ./environment/infra && terraform output state_bucket_name | cut -d "-" -f 3 )\"" infra/Makefile
 	sed -i "/vpc_id/c\vpc_id = \"$(shell aws ec2 describe-vpcs --filter Name=tag:Name,Values=rmit.k8s.local --query Vpcs[].VpcId --output text)\"" infra/terraform.tfvars
 	sed -i "/subnet_ids/c\subnet_ids = [ \"$(shell aws ec2 describe-subnets --filter Name=tag:Name,Values=us-east-1a.rmit.k8s.local --query Subnets[].SubnetId --output text)\", \"$(shell aws ec2 describe-subnets --filter Name=tag:Name,Values=us-east-1b.rmit.k8s.local --query Subnets[].SubnetId --output text)\" ]" infra/terraform.tfvars
-
 
 all-up: 
 	cd environment && make up

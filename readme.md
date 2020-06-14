@@ -136,14 +136,6 @@ When this job is run the finished output should be as per screenshots below.
 ![E2E_1](/img/Task_D_02.png)
 
 
-
-##### Cleanup
-`helm uninstall acme -n test`
-
-`kubectl delete namespace test`
-
-`cd infra && ENV=test make init && ENV=test make down`
-
 ## Production Environment
 
 ##### CircleCI Integration and Deployment 
@@ -170,17 +162,48 @@ Here is some screen shots of it in action.
 
 ![APR](/img/Task_F_01.png)
 
-##### Cleanup
-`helm uninstall acme -n prod`
-
-`kubectl delete namespace prod`
-
-`cd infra && ENV=prod make init && ENV=prod make down`
-
 
 ## Clean Up
 
 The makefile in [/Makefile](/Makefile) will handle this. Simplply run `make all-down`
+
+## Running Entire Workflow with Cloudwatch Monitoring
+
+The application of cloudwatch enables viewing logs on AWS Cloudwatch. This is done automatically through a CircleCI job through:
+```
+  cloudwatch:
+    docker:
+     - image: cimg/base:2020.01 
+    environment:
+      ENV: amazon-cloudwatch
+    steps:
+      - checkout
+      - setup-cd
+      - run: 
+          name: Enabling cloudwatch
+          command: |
+            kubectl create namespace ${ENV}
+            kubectl create configmap cluster-info --from-literal=cluster.name=rmit.k8s.local --from-literal=logs.region=us-east-1 -n ${ENV}
+            wget https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluentd/fluentd.yaml
+            kubectl apply -f fluentd.yaml
+```
+Summary | Screenshot
+------------ | -------------
+New workflow has been initated for all of the created jobs. |![WORKFLOW](/img/Task_G_01.png)
+
+Summary | Screenshot
+------------ | -------------
+Cloudwatch is enabled... Job is complete - Package Job is complete - | ![WORKFLOW](/img/Task_G_02.png) ![WORKFLOW](/img/Task_G_04.png) ![WORKFLOW](/img/Task_G_05.png)
+
+Summary | Screenshot
+------------ | -------------
+
+
+
+
+![WORKFLOW](/img/Task_G_06.png)
+
+
 
 ## Utilization of CircleCI and Github
 Due to CircleCI credit issue majority of the work was completed with a personal repository. Here are some screenshots of the branchs and CI.
@@ -188,3 +211,7 @@ Due to CircleCI credit issue majority of the work was completed with a personal 
 ![/img/CircleCI.png](/img/CircleCI.png)
 
 ![/img/Github_01.png](/img/Github_01.png)
+
+
+## Cleanup
+Cleanup is automated through CircleCI. There is also commands within the [/Makefile](/Makefile) available.
