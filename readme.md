@@ -193,17 +193,35 @@ New workflow has been initated for all of the created jobs. |![WORKFLOW](/img/Ta
 
 Summary | Screenshot
 ------------ | -------------
-Cloudwatch is enabled... Job is complete - Package Job is complete - | ![WORKFLOW](/img/Task_G_02.png) ![WORKFLOW](/img/Task_G_04.png) ![WORKFLOW](/img/Task_G_05.png)
+Cloudwatch is enabled... Job is complete - Package Job is complete | ![WORKFLOW](/img/Task_G_02.png) ![WORKFLOW](/img/Task_G_04.png) ![WORKFLOW](/img/Task_G_05.png) 
 
 Summary | Screenshot
 ------------ | -------------
+Kubectl HELM Deployment into Test Enviroment Job is complete - End to end testing is complete | ![WORKFLOW](/img/Task_G_06.png) ![WORKFLOW](/img/Task_G_07.png) 
 
+Summary | Screenshot
+------------ | -------------
+Approving the stage gate for Deploying to Production Environment | ![WORKFLOW](/img/Task_G_08.png) ![WORKFLOW](/img/Task_G_09.png) ![WORKFLOW](/img/Task_G_10.png)
 
+Summary | Screenshot
+------------ | -------------
+Checking up on cloud watch | ![WORKFLOW](/img/Task_G_11.png) ![WORKFLOW](/img/Task_G_12.png) ![WORKFLOW](/img/Task_G_13.png) ![WORKFLOW](/img/Task_G_14.png) ![WORKFLOW](/img/Task_G_16.png)
 
+Summary | Screenshot
+------------ | -------------
+Kube has deployed to Production Environment | ![WORKFLOW](/img/Task_G_15.png) ![WORKFLOW](/img/Task_G_21.png)
 
-![WORKFLOW](/img/Task_G_06.png)
+Summary | Screenshot
+------------ | -------------
+Verifying AWS deployment | ![WORKFLOW](/img/Task_G_17.png) ![WORKFLOW](/img/Task_G_18.png) ![WORKFLOW](/img/Task_G_19.png) ![WORKFLOW](/img/Task_G_20.png)
 
+Summary | Screenshot
+------------ | -------------
+Approving Stage Gate for Clean Up Job |   ![WORKFLOW](/img/Task_G_22.png) ![WORKFLOW](/img/Task_G_23.png)
 
+Summary | Screenshot
+------------ | -------------
+Now that the cleanup job is complete lets verify with AWS |   ![WORKFLOW](/img/Task_G_24.png) ![WORKFLOW](/img/Task_G_26.png) ![WORKFLOW](/img/Task_G_27.png) ![WORKFLOW](/img/Task_G_28.png)
 
 ## Utilization of CircleCI and Github
 Due to CircleCI credit issue majority of the work was completed with a personal repository. Here are some screenshots of the branchs and CI.
