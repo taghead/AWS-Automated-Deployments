@@ -1,5 +1,5 @@
-subnet_ids = [ "subnet-04b8d6a2d81ef6898", "subnet-0cb0bcef24f761a68" ]
+subnet_ids = [ "subnet-0d74a49f9ac0adcf9", "subnet-0c6c73ef7548c6ca3" ]
 username = "thisistheuser"
 password = "thisisthepassword"
-vpc_id = "vpc-0eb9fd662672af82a"
+vpc_id = "vpc-0f739974a9a3ee4fd"
 name = "acme-db"

@@ -6,6 +6,28 @@ Add CircleCI Environemnt Variables for AWS_ACCESS_KEY_ID, AWS_DEFAULT_REGION, AW
 
 ## Standing Infastructure
 
+There are two methods available to stand the infastrucuture. Manual or Automated.
+
+##### Automated
+Standing all of the infastructure is automated by the use of a make file located at [/Makefile](/Makefile). Simply run the command `make all-up`.
+
+This automation for standing the infastructure uses various aws queries and terraform outs to perform some trickery to obtain the appropriated information then applying them to the file. 
+```
+apply-vars:
+	sed -i "/--state s3:\/\/rmit-kops-state-/c\          kops export kubecfg rmit.k8s.local --state s3:\/\/rmit-kops-state-$(shell  cd ./environment/infra && terraform output state_bucket_name | cut -d "-" -f 3 )" .circleci/config.yml
+	sed -i "/ECR:/c\      ECR: $(shell  cd ./environment/infra && terraform output ecr_url | cut -d "/" -f 1 )" .circleci/config.yml
+	sed -i "/--backend-config/c\	terraform init --backend-config=\"key=state/"$$"{ENV}.tfstate\" --backend-config=\"dynamodb_table=RMIT-locktable-$(shell  cd ./environment/infra && terraform output state_bucket_name | cut -d "-" -f 3 )\" --backend-config=\"bucket=rmit-tfstate-$(shell  cd ./environment/infra && terraform output state_bucket_name | cut -d "-" -f 3 )\"" infra/Makefile
+	sed -i "/vpc_id/c\vpc_id = \"$(shell aws ec2 describe-vpcs --filter Name=tag:Name,Values=rmit.k8s.local --query Vpcs[].VpcId --output text)\"" infra/terraform.tfvars
+	sed -i "/subnet_ids/c\subnet_ids = [ \"$(shell aws ec2 describe-subnets --filter Name=tag:Name,Values=us-east-1a.rmit.k8s.local --query Subnets[].SubnetId --output text)\", \"$(shell aws ec2 describe-subnets --filter Name=tag:Name,Values=us-east-1b.rmit.k8s.local --query Subnets[].SubnetId --output text)\" ]" infra/terraform.tfvars
+
+
+all-up: 
+	cd environment && make up
+	cd environment && make kube-up
+	make apply-vars
+```
+
+##### Manual
 The infastruture must be stood in a specific order due to dependencies. 
 1. Stand the environment in [/environment/infra/](/environment) by using `make up`
 2. Stand the kube cluster in [/environment/infra/](/environment) by using `make kube-up`
@@ -158,7 +180,7 @@ Here is some screen shots of it in action.
 
 ## Clean Up
 
-The makefile in [/Makefile](/Makefile) will handle this. Simple run `make all-down`
+The makefile in [/Makefile](/Makefile) will handle this. Simplply run `make all-down`
 
 ## Utilization of CircleCI and Github
 Due to CircleCI credit issue majority of the work was completed with a personal repository. Here are some screenshots of the branchs and CI.
