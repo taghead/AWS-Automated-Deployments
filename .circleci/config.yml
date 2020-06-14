@@ -202,6 +202,7 @@ jobs:
       ENV: amazon-cloudwatch
     steps:
       - checkout
+      - setup-cd
       - run: 
           name: Enabling cloudwatch
           command: |
@@ -215,6 +216,7 @@ jobs:
      - image: cimg/base:2020.01 
     steps:
       - checkout
+      - setup-cd
       - run: 
           name: Destroying Kube Namespace
           command: |
