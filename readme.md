@@ -1,3 +1,5 @@
+Acme corp. has forwarded the idea of futher developing the CI. Through the utilization of Kubernetes along with their current automation the deployment for their acme application will provide a great level of control for scalability, testing and deployments.   
+
 ## Requirements
 
 Add CircleCI Environemnt Variables for AWS_ACCESS_KEY_ID, AWS_DEFAULT_REGION, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN. Following that update the aws credentials. 
@@ -152,3 +154,15 @@ Here is some screen shots of it in action.
 `kubectl delete namespace prod`
 
 `cd infra && ENV=prod make init && ENV=prod make down`
+
+
+## Clean Up
+
+The makefile in [/Makefile](/Makefile) will handle this. Simple run `make all-down`
+
+## Utilization of CircleCI and Github
+Due to CircleCI credit issue majority of the work was completed with a personal repository. Here are some screenshots of the branchs and CI.
+
+![/img/CircleCI.png](/img/CircleCI.png)
+
+![/img/Github_01.png](/img/Github_01.png)

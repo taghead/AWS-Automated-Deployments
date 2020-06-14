@@ -5,4 +5,4 @@ down:
 	terraform destroy --auto-approve -var environment=${ENV}
 
 init:
-	terraform init --backend-config="key=state/${ENV}.tfstate" --backend-config="dynamodb_table=RMIT-locktable-l7m1v7" --backend-config="bucket=rmit-tfstate-l7m1v7"
+	terraform init --backend-config="key=state/${ENV}.tfstate" --backend-config="dynamodb_table=RMIT-locktable-qjv4lm" --backend-config="bucket=rmit-tfstate-qjv4lm"
